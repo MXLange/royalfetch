@@ -39,6 +39,7 @@ func (r *RoyalFetch) Head(url string, optional ...RoyalFetch) (*http.Response, e
 
 	if r.Retry > 0 && r.ContainsCode(response.StatusCode) {
 		r.Retry--
+		response.Body.Close()
 		if r.WaitingTime > 0 {
 			time.Sleep(time.Duration(r.WaitingTime) * time.Millisecond)
 			if r.WaitTimeIncreaseRate > 1.0 {
