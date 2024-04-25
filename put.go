@@ -27,9 +27,23 @@ func (r *RoyalFetch) Put(url string, body string, optional ...RoyalFetch) (*http
 		}
 	}
 
+	if r.Auth != nil {
+		err := SetHttpAuth(req, r.Auth)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	client := &http.Client{}
 	if r.Timeout > 0 {
 		client.Timeout = time.Duration(r.Timeout) * time.Millisecond
+	}
+
+	if r.Proxy != nil {
+		err := SetHttpProxy(client, r.Proxy)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	response, err := client.Do(req)

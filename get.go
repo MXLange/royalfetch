@@ -1,6 +1,7 @@
 package royalfetch
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -27,9 +28,23 @@ func (r *RoyalFetch) Get(url string, optional ...RoyalFetch) (*http.Response, er
 		}
 	}
 
+	if r.Auth != nil {
+		err := SetHttpAuth(req, r.Auth)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	client := &http.Client{}
 	if r.Timeout > 0 {
 		client.Timeout = time.Duration(r.Timeout) * time.Millisecond
+	}
+
+	if r.Proxy != nil {
+		err := SetHttpProxy(client, r.Proxy)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	response, err := client.Do(req)
@@ -46,6 +61,7 @@ func (r *RoyalFetch) Get(url string, optional ...RoyalFetch) (*http.Response, er
 				r.WaitingTime *= r.WaitTimeIncreaseRate
 			}
 		}
+		fmt.Println("Retrying...")
 		return r.Get(url)
 	}
 

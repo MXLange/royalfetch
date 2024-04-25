@@ -1,5 +1,10 @@
 package royalfetch
 
+import (
+	"github.com/MXLange/royalfetch/auth"
+	"github.com/MXLange/royalfetch/proxy"
+)
+
 type RoyalFetch struct {
 	BaseURL              string
 	Retry                int
@@ -8,6 +13,8 @@ type RoyalFetch struct {
 	WaitTimeIncreaseRate float32
 	Timeout              int
 	Headers              map[string]string
+	Proxy                *proxy.Proxy
+	Auth                 *auth.Auth
 }
 
 func New(options RoyalFetch) *RoyalFetch {
@@ -19,14 +26,7 @@ func New(options RoyalFetch) *RoyalFetch {
 		WaitTimeIncreaseRate: options.WaitTimeIncreaseRate,
 		Timeout:              options.Timeout,
 		Headers:              options.Headers,
+		Proxy:                options.Proxy,
+		Auth:                 options.Auth,
 	}
-}
-
-func (o *RoyalFetch) ContainsCode(code int) bool {
-	for _, c := range o.CodesToRetry {
-		if c == code {
-			return true
-		}
-	}
-	return false
 }

@@ -1,11 +1,9 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"io"
-
 	"github.com/MXLange/royalfetch"
+	"github.com/MXLange/royalfetch/auth"
+	"github.com/MXLange/royalfetch/proxy"
 )
 
 type Pet struct {
@@ -31,43 +29,88 @@ type Tag struct {
 
 func main() {
 	fetch := royalfetch.New(royalfetch.RoyalFetch{
-		BaseURL:              "https://petstore.swagger.io/v2",
-		Retry:                3,
-		WaitingTime:          1000,
-		WaitTimeIncreaseRate: 1.25,
-		Timeout:              5000,
-		Headers: map[string]string{
-			"Content-Type": "application/json",
+		Proxy: &proxy.Proxy{
+			Host: "http://localhost",
+			Port: 8080,
+			Auth: &auth.BasicAuth{
+				Username: "user",
+				Password: "password",
+			},
+		},
+		Auth: &auth.Auth{
+			BasicAuth: &auth.BasicAuth{
+				Username: "user",
+				Password: "password",
+			},
 		},
 	})
-
-	pet := Pet{
-		ID: 1,
-		Category: Category{
-			ID:   2,
-			Name: "categoria1",
-		},
-		Name:      "doggie",
-		PhotoUrls: []string{"url1", "url2"},
-		Tags: []Tag{
-			{ID: 1, Name: "tag1"},
-			{ID: 2, Name: "tag2"},
-		},
-		Status: "available",
-	}
-
-	json, err := json.Marshal(pet)
-	if err != nil {
-		fmt.Println(err)
-	}
-	res, err := fetch.Post("/pet", string(json))
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer res.Body.Close()
-	bytes, err := io.ReadAll(res.Body)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(string(bytes))
 }
+
+// func main() {
+// 	fetch := royalfetch.New(royalfetch.RoyalFetch{
+// 		BaseURL:              "http://localhost:5000",
+// 		Retry:                4,
+// 		WaitingTime:          1000,
+// 		WaitTimeIncreaseRate: 2,
+// 		CodesToRetry:         []int{500, 502, 503, 504},
+// 		Timeout:              5000,
+// 		Headers: map[string]string{
+// 			"Content-Type": "application/json",
+// 		},
+// 	})
+
+// 	res, err := fetch.Get("/")
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
+// 	defer res.Body.Close()
+// 	bytes, err := io.ReadAll(res.Body)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
+// 	fmt.Println(string(bytes))
+
+// }
+
+// func main() {
+// 	fetch := royalfetch.New(royalfetch.RoyalFetch{
+// 		BaseURL:              "https://petstore.swagger.io/v2",
+// 		Retry:                3,
+// 		WaitingTime:          1000,
+// 		WaitTimeIncreaseRate: 1.25,
+// 		Timeout:              5000,
+// 		Headers: map[string]string{
+// 			"Content-Type": "application/json",
+// 		},
+// 	})
+
+// 	pet := Pet{
+// 		ID: 1,
+// 		Category: Category{
+// 			ID:   2,
+// 			Name: "categoria1",
+// 		},
+// 		Name:      "doggie",
+// 		PhotoUrls: []string{"url1", "url2"},
+// 		Tags: []Tag{
+// 			{ID: 1, Name: "tag1"},
+// 			{ID: 2, Name: "tag2"},
+// 		},
+// 		Status: "available",
+// 	}
+
+// 	json, err := json.Marshal(pet)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
+// 	res, err := fetch.Post("/pet", string(json))
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
+// 	defer res.Body.Close()
+// 	bytes, err := io.ReadAll(res.Body)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
+// 	fmt.Println(string(bytes))
+// }
