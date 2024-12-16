@@ -9,15 +9,6 @@ import (
 	"github.com/MXLange/royalfetch/v2/proxy"
 )
 
-func (o *RoyalFetch) ContainsCode(code int) bool {
-	for _, c := range o.CodesToRetry {
-		if c == code {
-			return true
-		}
-	}
-	return false
-}
-
 func SetHttpProxy(httpClient *http.Client, proxy *proxy.Proxy) error {
 
 	if proxy == nil {

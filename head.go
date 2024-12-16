@@ -6,11 +6,7 @@ import (
 	"time"
 )
 
-func (r RoyalFetch) Head(url string, optional ...RoyalFetch) (*http.Response, error) {
-
-	if len(optional) > 0 {
-		return optional[0].Head(url)
-	}
+func (r RoyalFetch) Head(url string) (*http.Response, error) {
 
 	if !strings.Contains(url, r.BaseURL) {
 		url = r.BaseURL + url
@@ -21,10 +17,8 @@ func (r RoyalFetch) Head(url string, optional ...RoyalFetch) (*http.Response, er
 		return nil, err
 	}
 
-	if len(r.Headers) > 0 {
-		for key, value := range r.Headers {
-			req.Header.Set(key, value)
-		}
+	for key, value := range r.Headers {
+		req.Header.Set(key, value)
 	}
 
 	if r.Auth != nil {
