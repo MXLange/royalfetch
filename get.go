@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func (r *RoyalFetch) Get(url string, optional ...RoyalFetch) (*http.Response, error) {
+func (r RoyalFetch) Get(url string, optional ...RoyalFetch) (*http.Response, error) {
 
 	if len(optional) > 0 {
 		return optional[0].Get(url)
@@ -35,19 +35,14 @@ func (r *RoyalFetch) Get(url string, optional ...RoyalFetch) (*http.Response, er
 		}
 	}
 
-	client := &http.Client{}
-	if r.Timeout > 0 {
-		client.Timeout = time.Duration(r.Timeout) * time.Millisecond
-	}
-
 	if r.Proxy != nil {
-		err := SetHttpProxy(client, r.Proxy)
+		err := SetHttpProxy(&r.httpClient, r.Proxy)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	response, err := client.Do(req)
+	response, err := r.httpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}

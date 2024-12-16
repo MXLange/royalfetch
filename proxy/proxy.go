@@ -1,6 +1,6 @@
 package proxy
 
-import "github.com/MXLange/royalfetch/auth"
+import "github.com/MXLange/royalfetch/v2/auth"
 
 type Proxy struct {
 	// Protocol string //TODO

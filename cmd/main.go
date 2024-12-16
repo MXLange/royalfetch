@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/MXLange/royalfetch"
-	"github.com/MXLange/royalfetch/auth"
-	"github.com/MXLange/royalfetch/proxy"
+	"github.com/MXLange/royalfetch/v2"
+	"github.com/MXLange/royalfetch/v2/auth"
+	"github.com/MXLange/royalfetch/v2/proxy"
 )
 
 type Pet struct {

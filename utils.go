@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/MXLange/royalfetch/auth"
-	"github.com/MXLange/royalfetch/proxy"
+	"github.com/MXLange/royalfetch/v2/auth"
+	"github.com/MXLange/royalfetch/v2/proxy"
 )
 
 func (o *RoyalFetch) ContainsCode(code int) bool {
