@@ -21,10 +21,8 @@ func (r RoyalFetch) Patch(url string, body string, optional ...RoyalFetch) (*htt
 		return nil, err
 	}
 
-	if len(r.Headers) > 0 {
-		for key, value := range r.Headers {
-			req.Header.Set(key, value)
-		}
+	for key, value := range r.Headers {
+		req.Header.Set(key, value)
 	}
 
 	if r.Auth != nil {

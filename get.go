@@ -21,10 +21,8 @@ func (r RoyalFetch) Get(url string, optional ...RoyalFetch) (*http.Response, err
 		return nil, err
 	}
 
-	if len(r.Headers) > 0 {
-		for key, value := range r.Headers {
-			req.Header.Set(key, value)
-		}
+	for key, value := range r.Headers {
+		req.Header.Set(key, value)
 	}
 
 	if r.Auth != nil {
