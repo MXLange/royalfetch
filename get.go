@@ -1,7 +1,6 @@
 package royalfetch
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -56,7 +55,6 @@ func (r RoyalFetch) Get(url string, optional ...RoyalFetch) (*http.Response, err
 				r.WaitingTime *= r.WaitTimeIncreaseRate
 			}
 		}
-		fmt.Println("Retrying...")
 		return r.Get(url)
 	}
 

@@ -26,9 +26,6 @@ type RoyalFetch struct {
 	// WaitTimeIncreaseRate is the rate to increase the waiting time between retries
 	WaitTimeIncreaseRate float32
 
-	// Timeout is the timeout for the request
-	TimeoutMS int
-
 	// Headers is the list of headers to add to the request
 	Headers map[string]string
 
@@ -48,13 +45,7 @@ type RoyalFetch struct {
 func New(options RoyalFetch, httpClient *http.Client) *RoyalFetch {
 
 	if httpClient == nil {
-		httpClient = &http.Client{
-			Timeout: time.Duration(options.TimeoutMS) * time.Millisecond,
-		}
-	} else {
-		if options.TimeoutMS > 0 {
-			httpClient.Timeout = time.Duration(options.TimeoutMS) * time.Millisecond
-		}
+		httpClient = defaultHttpClient()
 	}
 
 	return &RoyalFetch{
@@ -67,5 +58,11 @@ func New(options RoyalFetch, httpClient *http.Client) *RoyalFetch {
 		Proxy:                options.Proxy,
 		Auth:                 options.Auth,
 		httpClient:           *httpClient,
+	}
+}
+
+func defaultHttpClient() *http.Client {
+	return &http.Client{
+		Timeout: time.Duration(5000) * time.Millisecond,
 	}
 }
