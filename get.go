@@ -6,11 +6,7 @@ import (
 	"time"
 )
 
-func (r RoyalFetch) Get(url string, optional ...RoyalFetch) (*http.Response, error) {
-
-	if len(optional) > 0 {
-		return optional[0].Get(url)
-	}
+func (r RoyalFetch) Get(url string) (*http.Response, error) {
 
 	if !strings.Contains(url, r.BaseURL) {
 		url = r.BaseURL + url

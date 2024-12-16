@@ -66,3 +66,39 @@ func defaultHttpClient() *http.Client {
 		Timeout: time.Duration(5000) * time.Millisecond,
 	}
 }
+
+func (r RoyalFetch) Clone() *RoyalFetch {
+
+	new := new(RoyalFetch)
+
+	new.BaseURL = r.BaseURL
+	new.Retry = r.Retry
+
+	if r.CodesToRetry != nil {
+		new.CodesToRetry = make([]int, len(r.CodesToRetry))
+		copy(new.CodesToRetry, r.CodesToRetry)
+	}
+
+	new.WaitingTime = r.WaitingTime
+	new.WaitTimeIncreaseRate = r.WaitTimeIncreaseRate
+	if r.Headers != nil {
+		new.Headers = make(map[string]string, len(r.Headers))
+		for key, value := range r.Headers {
+			new.Headers[key] = value
+		}
+	}
+	new.Proxy = r.Proxy
+	new.Auth = r.Auth
+	new.httpClient = r.httpClient
+
+	return new
+}
+
+func (r RoyalFetch) ContainsCode(code int) bool {
+	for _, c := range r.CodesToRetry {
+		if c == code {
+			return true
+		}
+	}
+	return false
+}
